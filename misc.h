@@ -118,6 +118,7 @@ extern raw_mode_t raw_mode;
 extern u32_t raw_ip_version;
 
 extern program_mode_t program_mode;
+extern int file_descriptor;
 extern unordered_map<int, const char*> raw_mode_tostring ;
 
 extern int about_to_exit;

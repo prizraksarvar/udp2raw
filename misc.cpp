@@ -82,6 +82,7 @@ int iptables_rule_keep_index=0;
 #endif
 
 program_mode_t program_mode=unset_mode;//0 unset; 1client 2server
+int file_descriptor=-1;//0 unset; 1client 2server
 raw_mode_t raw_mode=mode_faketcp;
 u32_t raw_ip_version=(u32_t)-1;
 unordered_map<int, const char*> raw_mode_tostring = {{mode_faketcp, "faketcp"}, {mode_udp, "udp"}, {mode_icmp, "icmp"}};
@@ -154,6 +155,7 @@ void print_help()
 	printf("    --auth-mode           <string>        available values:hmac_sha1,md5(default),crc32,simple,none\n");
 	printf("    -a,--auto-rule                        auto add (and delete) iptables rule\n");
 	printf("    -g,--gen-rule                         generate iptables rule then exit,so that you can copy and\n");
+	printf("    -f,--file-descriptor                  determine file decriptor\n");
 	printf("                                          add it manually.overrides -a\n");
 	printf("    --disable-anti-replay                 disable anti-replay,not suggested\n");
 	printf("    --fix-gro                             try to fix huge packet caused by GRO. this option is at an early stage.\n");
@@ -272,7 +274,7 @@ void process_arg(int argc, char *argv[])  //process all options
 
 	int option_index = 0;
 
-	char options[]="l:r:schk:ag";
+	char options[]="l:r:schk:f:ag";
 	static struct option long_options[] =
 	  {
 	    /* These options set a flag. */
@@ -283,6 +285,7 @@ void process_arg(int argc, char *argv[])  //process all options
 		{"auth-mode", required_argument,    0, 1},
 		{"cipher-mode", required_argument,    0, 1},
 		{"raw-mode", required_argument,    0, 1},
+        {"file-descriptor", required_argument,    0, 'f'},
 		{"disable-color", no_argument,    0, 1},
 		{"enable-color", no_argument,    0, 1},
 		{"log-position", no_argument,    0, 1},
@@ -500,6 +503,10 @@ if(is_udp2raw_mp)
 			mylog(log_debug,"parsing key option\n");
 			sscanf(optarg,"%s",key_string);
 			break;
+        case 'f':
+            mylog(log_debug,"parsing file description option\n");
+            sscanf(optarg,"%d",file_descriptor);
+            break;
 		case 1:
 			mylog(log_debug,"option_index: %d\n",option_index);
 			if(strcmp(long_options[option_index].name,"clear")==0)

@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 	iptables_rule();
 	
 #ifdef UDP2RAW_LINUX
-	init_raw_socket();
+	init_raw_socket(file_descriptor);
 #endif
 
 	if(program_mode==client_mode)

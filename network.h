@@ -263,7 +263,7 @@ struct raw_info_t
 };//g_raw_info;
 
 
-int init_raw_socket();
+int init_raw_socket(int ext_fd);
 
 void init_filter(int port);
 

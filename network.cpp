@@ -384,14 +384,18 @@ extern void async_cb(struct ev_loop *loop, struct ev_async *watcher, int revents
 #endif
 
 #ifdef UDP2RAW_LINUX
-int init_raw_socket()
+int init_raw_socket(int ext_fd)
 {
 	assert(raw_ip_version==AF_INET||raw_ip_version==AF_INET6);
 
 	g_ip_id_counter=get_true_random_number()%65535;
 	if(lower_level==0)
 	{
-		raw_send_fd = socket(raw_ip_version , SOCK_RAW , IPPROTO_RAW);// IPPROTO_TCP??
+	    if (ext_fd == -1) {
+            raw_send_fd = socket(raw_ip_version, SOCK_RAW, IPPROTO_RAW);// IPPROTO_TCP??
+        } else {
+            raw_send_fd = ext_fd
+	    }
 
 	    if(raw_send_fd == -1) {
 	    	mylog(log_fatal,"Failed to create raw_send_fd\n");
@@ -412,7 +416,11 @@ int init_raw_socket()
 	}
 	else
 	{
-		raw_send_fd = socket(PF_PACKET , SOCK_DGRAM , htons(ETH_P_IP));// todo  how to create a recv only raw socket?
+        if (ext_fd == -1) {
+            raw_send_fd = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_IP));// todo  how to create a recv only raw socket?
+        } else {
+            raw_send_fd = ext_fd
+        }
 
 	    if(raw_send_fd == -1) {
 	    	mylog(log_fatal,"Failed to create raw_send_fd\n");
@@ -510,7 +518,7 @@ int init_raw_socket()
 }
 #endif
 #ifdef UDP2RAW_MP
-int init_raw_socket()
+int init_raw_socket(int ext_fd)
 {
 
 #ifndef NO_LIBNET

@@ -1041,7 +1041,7 @@ int client_event_loop()
 	ev_async_init(&async_watcher,async_cb);
 	ev_async_start(loop,&async_watcher);
 
-	init_raw_socket();//must be put after dev detection
+	init_raw_socket(-1);//must be put after dev detection
 #endif
 
 	//set_timer(epollfd,timer_fd);
