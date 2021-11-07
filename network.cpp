@@ -394,7 +394,7 @@ int init_raw_socket(int ext_fd)
 	    if (ext_fd == -1) {
             raw_send_fd = socket(raw_ip_version, SOCK_RAW, IPPROTO_RAW);// IPPROTO_TCP??
         } else {
-            raw_send_fd = ext_fd
+            raw_send_fd = ext_fd;
 	    }
 
 	    if(raw_send_fd == -1) {
@@ -419,7 +419,7 @@ int init_raw_socket(int ext_fd)
         if (ext_fd == -1) {
             raw_send_fd = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_IP));// todo  how to create a recv only raw socket?
         } else {
-            raw_send_fd = ext_fd
+            raw_send_fd = ext_fd;
         }
 
 	    if(raw_send_fd == -1) {
