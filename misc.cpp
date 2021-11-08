@@ -505,7 +505,7 @@ if(is_udp2raw_mp)
 			break;
         case 'f':
             mylog(log_debug,"parsing file description option\n");
-            sscanf(optarg,"%d",file_descriptor);
+            sscanf(optarg,"%d",&file_descriptor);
             break;
 		case 1:
 			mylog(log_debug,"option_index: %d\n",option_index);
